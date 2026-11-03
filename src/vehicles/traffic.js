@@ -30,7 +30,7 @@ export function createTraffic() {
   for (let laneZ of [-500, -200, 100, 400]) {
     for (let i=0;i<5;i++) {
       const x = -950 + i*210;
-      addVehicle(i%2===0?'bus':'tuk', x, laneZ+ (laneZ===-500?12:12), 7+Math.random()*5, 1, i%2===0?bodyMat:blueMat);
+      addVehicle(i%2===0?'bus':'tuk', x, laneZ + 2.2, 7+Math.random()*5, 1, i%2===0?bodyMat:blueMat);
     }
   }
   return {
