@@ -98,7 +98,7 @@ export function createPlayer(camera, renderer, scene, city) {
     camera.getWorldDirection(forward);
     forward.y = 0;
     forward.normalize();
-    right.crossVectors(forward, worldUp).negate().normalize();
+    right.crossVectors(forward, worldUp).normalize();
     const distance = speed * delta;
     candidate.copy(player.position).addScaledVector(forward, forwardAmount * distance);
     if (!blocked(candidate.x, player.position.z)) player.position.x = candidate.x;
