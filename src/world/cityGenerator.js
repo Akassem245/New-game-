@@ -62,6 +62,7 @@ export function createCity() {
   const brickBands = makePool(brickBandGeo, brickMaterials[2], 26000);
   const counts = new Map(pools.map(mesh => [mesh, 0]));
   const colliders = [];
+  const alleyGeo = new THREE.BoxGeometry(1, 0.12, 1);
 
   function put(mesh, position, scale, rotationY = 0) {
     const index = counts.get(mesh);
@@ -116,15 +117,28 @@ export function createCity() {
       const pairedBlock = bz < 5 ? bz : bz - 5;
       const nearMain = bx % 3 === 0 || pairedBlock % 3 === 0;
       const floors = nearMain ? 12 : 8;
+      // Four 3 m pedestrian alleys in each direction connect the inner parcels.
+      for (let gap = 0; gap < 4; gap++) {
+        const alleyX = blockX - 39 + gap * 19 + 9.5;
+        const verticalAlley = new THREE.Mesh(alleyGeo, roadMat);
+        verticalAlley.scale.set(3, 1, 88);
+        verticalAlley.position.set(alleyX, 0.025, blockZ);
+        group.add(verticalAlley);
+        const alleyZ = blockZ + (gap - 1.5) * 19;
+        const horizontalAlley = new THREE.Mesh(alleyGeo, roadMat);
+        horizontalAlley.scale.set(88, 1, 3);
+        horizontalAlley.position.set(blockX, 0.025, alleyZ);
+        group.add(horizontalAlley);
+      }
       for (let row = 0; row < 5; row++) {
         for (let col = 0; col < 5; col++) {
           // Each north-side parcel reuses the exact dimensions and height of its mirrored south-side parcel.
           const sourceRow = bz >= 5 ? 4 - row : row;
           const parcelRandom = seeded(2026 + bx * 100000 + pairedBlock * 10000 + sourceRow * 100 + col);
-          const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 2;
+          const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 1;
           const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 2);
-          const w = 12 + parcelRandom() * 4;
-          const d = 12 + parcelRandom() * 4;
+          const w = 12 + parcelRandom() * 1.5;
+          const d = 12 + parcelRandom() * 1.5;
           const h = floors * 3.1 * (0.9 + parcelRandom() * 0.12);
           const isParis = z >= 0;
           const palette = isParis ? parisBuildings : brickBuildings;
@@ -133,8 +147,8 @@ export function createCity() {
           const rotation = (parcelRandom() - 0.5) * 0.035;
           put(building, { x, y: h / 2, z }, { x: w, y: h, z: d }, rotation);
           colliders.push({
-            minX: x - w / 2 - 1.1, maxX: x + w / 2 + 1.1,
-            minZ: z - d / 2 - 1.1, maxZ: z + d / 2 + 1.1
+            minX: x - w / 2 - 0.25, maxX: x + w / 2 + 0.25,
+            minZ: z - d / 2 - 0.25, maxZ: z + d / 2 + 0.25
           });
 
           const floorCount = Math.max(4, Math.floor(h / 3.1));
