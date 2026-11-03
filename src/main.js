@@ -35,12 +35,12 @@ const city = createCity(); scene.add(city);
 const park = createGreenArea(); scene.add(park);
 const traffic = createTraffic(); scene.add(traffic.group);
 const crowd = createCrowd(1800); scene.add(crowd.group);
-const player = createPlayer(camera,renderer,scene);
+const player = createPlayer(camera,renderer,scene,city);
 
 const panel = document.createElement('div');
-panel.innerHTML = '<strong>NEW GAME · DENSE CITY</strong><br><span>WASD: move · Mouse: look · Shift: run · Click: capture mouse</span><br><span>City: 1 km² · Green park: 1 km² · 8 / 12 floors</span>';
+panel.innerHTML = '<strong>NEW GAME · DENSE CITY</strong><br><span>WASD / الأسهم: حركة · الفأرة: نظر · Shift: جري · الهاتف: أزرار + سحب</span><br><span>City: 1 km² · Green park: 1 km² · 8 / 12 floors</span>';
 panel.style.cssText = 'position:fixed;top:16px;left:16px;padding:12px 15px;color:#fff;background:#101820d9;border:1px solid #ffffff33;border-radius:9px;line-height:1.6;font-size:13px;pointer-events:none;box-shadow:0 5px 22px #0005';
-document.body.appendChild(panel);
+document.body.appendChild(panel);\nif (matchMedia('(pointer:coarse)').matches) panel.style.maxWidth = '210px';
 const start = document.createElement('div');
 start.textContent = 'انقر داخل المشهد لبدء التجول';
 start.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 20px;color:white;background:#14212ddd;border-radius:10px;font-size:17px;pointer-events:none';
