@@ -11,7 +11,6 @@ function seeded(seed = 2026) {
 
 export function createCity() {
   const group = new THREE.Group();
-  const random = seeded();
   const dummy = new THREE.Object3D();
   const roadMat = new THREE.MeshStandardMaterial({ color: 0x292d30, roughness: 0.92 });
   const sidewalkMat = new THREE.MeshStandardMaterial({ color: 0xbab4a8, roughness: 0.88 });
@@ -112,21 +111,26 @@ export function createCity() {
   for (let bx = 0; bx < 10; bx++) {
     for (let bz = 0; bz < 10; bz++) {
       const blockX = -950 + bx * 100;
-      const blockZ = -450 + bz * 100;
+      const blockZ = bz < 5 ? -450 + bz * 100 : 450 - (bz - 5) * 100;
+      const mirrorZ = bz < 5 ? 1 : -1;
       const nearMain = bx % 3 === 0 || bz % 3 === 0;
       const floors = nearMain ? 12 : 8;
       for (let row = 0; row < 5; row++) {
         for (let col = 0; col < 5; col++) {
-          const x = blockX - 39 + col * 19 + (random() - 0.5) * 2;
-          const z = blockZ - 39 + row * 19 + (random() - 0.5) * 2;
-          const w = 12 + random() * 4;
-          const d = 12 + random() * 4;
-          const h = floors * 3.1 * (0.9 + random() * 0.12);
+          // Each north-side parcel reuses the exact dimensions and height of its mirrored south-side parcel.
+          const sourceRow = bz >= 5 ? 4 - row : row;
+          const pairedBlock = bz < 5 ? bz : bz - 5;
+          const parcelRandom = seeded(2026 + bx * 100000 + pairedBlock * 10000 + sourceRow * 100 + col);
+          const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 2;
+          const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 2);
+          const w = 12 + parcelRandom() * 4;
+          const d = 12 + parcelRandom() * 4;
+          const h = floors * 3.1 * (0.9 + parcelRandom() * 0.12);
           const isParis = z >= 0;
           const palette = isParis ? parisBuildings : brickBuildings;
-          const matIndex = Math.floor(random() * 4);
+          const matIndex = Math.floor(parcelRandom() * 4);
           const building = palette[matIndex];
-          const rotation = (random() - 0.5) * 0.035;
+          const rotation = (parcelRandom() - 0.5) * 0.035;
           put(building, { x, y: h / 2, z }, { x: w, y: h, z: d }, rotation);
           colliders.push({
             minX: x - w / 2 - 1.1, maxX: x + w / 2 + 1.1,
