@@ -91,7 +91,7 @@ export function createPlayer(camera, renderer, scene, city) {
 
   function update(delta) {
     if (!controls.isLocked && !touchActive && !lookPointer) return;
-    const speed = keys.sprint ? 19 : 8;
+    const speed = keys.sprint ? 14 : 5.5;
     const forwardAmount = Number(keys.forward) - Number(keys.backward);
     const sideAmount = Number(keys.right) - Number(keys.left);
     if (!forwardAmount && !sideAmount) return;
