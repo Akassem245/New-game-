@@ -51,13 +51,13 @@ export function createCity() {
   };
   const brickBuildings = brickMaterials.map(m => makePool(buildingGeo, m, 1300));
   const parisBuildings = parisMaterials.map(m => makePool(buildingGeo, m, 1300));
-  const windows = makePool(windowGeo, glassMat, 26000);
+  const windows = makePool(windowGeo, glassMat, 200000);
   const balconies = makePool(balconySlabGeo, parisMaterials[1], 13000);
   const rails = makePool(railGeo, darkMetalMat, 13000);
   const railPosts = makePool(railPostGeo, darkMetalMat, 52000);
-  const screens = makePool(screenGeo, woodMat, 26000);
-  const screenVertical = makePool(slatVGeo, woodMat, 78000);
-  const screenHorizontal = makePool(slatHGeo, woodMat, 78000);
+  const screens = makePool(screenGeo, woodMat, 75000);
+  const screenVertical = makePool(slatVGeo, woodMat, 225000);
+  const screenHorizontal = makePool(slatHGeo, woodMat, 225000);
   const cornices = makePool(corniceGeo, corniceMat, 13000);
   const brickBands = makePool(brickBandGeo, brickMaterials[2], 26000);
   const counts = new Map(pools.map(mesh => [mesh, 0]));
@@ -158,7 +158,11 @@ export function createCity() {
             for (let colIndex = 0; colIndex < windowColumns; colIndex++) {
               const wx = x - w / 2 + (colIndex + 0.5) * w / windowColumns;
               put(windows, { x: wx, y, z: z + d / 2 + 0.09 }, { x: 1, y: 1, z: 1 }, rotation);
-              if (isParis && counts.get(screens) < 25000) {
+              // Street-facing side walls also receive windows, so the city is not made of blank boxes.
+              const wz = z - d / 2 + (colIndex + 0.5) * d / windowColumns;
+              put(windows, { x: x + w / 2 + 0.09, y, z: wz }, { x: 1, y: 1, z: 1 }, rotation + Math.PI / 2);
+              put(windows, { x: x - w / 2 - 0.09, y, z: wz }, { x: 1, y: 1, z: 1 }, rotation - Math.PI / 2);
+              if (isParis && counts.get(screens) < 75000) {
                 put(screens, { x: wx, y, z: z + d / 2 + 0.23 }, { x: 1, y: 1, z: 1 }, rotation);
                 for (let k = -1; k <= 1; k++) {
                   put(screenVertical, { x: wx + k * 0.48, y, z: z + d / 2 + 0.32 }, { x: 1, y: 1, z: 1 }, rotation);
