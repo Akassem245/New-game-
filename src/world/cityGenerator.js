@@ -153,6 +153,14 @@ export function createCity() {
                 for (let p = -1; p <= 1; p++) {
                   put(railPosts, { x: wx + p * 1.45, y: y - 0.12, z: z + d / 2 + 1.13 }, { x: 1, y: 1, z: 1 }, rotation);
                 }
+                // A second, waist-high mashrabiya screen encloses the balcony edge.
+                put(screens, { x: wx, y: y - 0.48, z: z + d / 2 + 1.25 }, { x: 1, y: 0.58, z: 1 }, rotation);
+                for (let k = -1; k <= 1; k++) {
+                  put(screenVertical, { x: wx + k * 0.48, y: y - 0.48, z: z + d / 2 + 1.34 }, { x: 1, y: 0.58, z: 1 }, rotation);
+                }
+                for (let k = -1; k <= 1; k++) {
+                  put(screenHorizontal, { x: wx, y: y - 0.48 + k * 0.34, z: z + d / 2 + 1.34 }, { x: 1, y: 1, z: 1 }, rotation);
+                }
               }
             }
           }
