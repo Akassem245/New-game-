@@ -76,6 +76,16 @@ function animate() {
   player.update(delta);
   traffic.update(delta);
   crowd.update(clock.elapsedTime);
+  // Slow east-to-west sun movement makes shadows visibly change over a short play session.
+  const dayPhase = (clock.elapsedTime / 240) * Math.PI * 0.72 - 0.36;
+  const sunX = Math.sin(dayPhase);
+  const sunY = Math.max(0.28, Math.cos(dayPhase));
+  const sunZ = -0.46;
+  sun.position.set(sunX * 700, sunY * 850, sunZ * 700);
+  sun.target.position.set(-500, 0, 0);
+  sun.target.updateMatrixWorld();
+  const movingSun = new THREE.Vector3(sunX, sunY, sunZ).normalize();
+  skyUniforms.sunPosition.value.copy(movingSun);
   renderer.render(scene,camera);
 }
 animate();
