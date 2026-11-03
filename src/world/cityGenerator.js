@@ -27,7 +27,7 @@ export function createCity() {
   const windowGeo = new THREE.BoxGeometry(1.15, 1.35, 0.12);
   const buildingMeshes = concrete.map(mat => new THREE.InstancedMesh(buildingGeo, mat, 1800));
   const windowMesh = new THREE.InstancedMesh(windowGeo, windowMat, 24000);
-  let buildingCount = 0, windowCount = 0;
+  let buildingCount = 0, windowCount = 0;\n  const perMeshCounts = new Array(buildingMeshes.length).fill(0);
   const dummy = new THREE.Object3D();
 
   // City limits: x = -1000..0, z = -500..500. Main roads are 8 m; alleys are 3 m.
@@ -38,7 +38,7 @@ export function createCity() {
     const width = main ? 8 : 3;
     const road = new THREE.Mesh(roadGeo, roadMat);
     road.scale.set(width, 1, CITY_D);
-    road.position.set(x + 500, 0.05, 0);
+    road.position.set(x, 0.05, 0);
     group.add(road);
   }
   for (let i = 0; i <= 10; i++) {
@@ -53,7 +53,7 @@ export function createCity() {
   // Sidewalk strips along main avenues.
   const sidewalkGeo = new THREE.BoxGeometry(1, 0.18, 1);
   for (let i = 0; i <= 10; i += MAIN_EVERY) {
-    const x = -1000 + i * ROAD_STEP + 500;
+    const x = -1000 + i * ROAD_STEP;
     for (const side of [-1, 1]) {
       const walk = new THREE.Mesh(sidewalkGeo, sidewalkMat);
       walk.scale.set(3.2, 1, CITY_D);
@@ -90,7 +90,7 @@ export function createCity() {
             dummy.scale.set(w, h, d);
             dummy.rotation.y = (random() - 0.5) * 0.08;
             dummy.updateMatrix();
-            mesh.setMatrixAt(buildingCount % mesh.count, dummy.matrix);
+            mesh.setMatrixAt(perMeshCounts[meshIndex]++, dummy.matrix);
           }
           // Repeated windows are instanced separately and kept lightweight.
           const rows = Math.max(3, Math.floor(h / 3.1));
@@ -111,7 +111,7 @@ export function createCity() {
     }
   }
   buildingMeshes.forEach(mesh => {
-    mesh.count = Math.min(1800, buildingCount);
+    mesh.count = perMeshCounts[buildingMeshes.indexOf(mesh)];
     mesh.instanceMatrix.needsUpdate = true;
     group.add(mesh);
   });
@@ -128,9 +128,9 @@ export function createCity() {
     for (let z = -480; z <= 480; z += 35) {
       if (Math.abs(x % 300) < 2) continue;
       const trunk = new THREE.Mesh(trunkGeo, trunkMat);
-      trunk.position.set(x + 500 + 10, 1.5, z);
+      trunk.position.set(x + 10, 1.5, z);
       const crown = new THREE.Mesh(crownGeo, leafMat);
-      crown.position.set(x + 500 + 10, 4, z);
+      crown.position.set(x + 10, 4, z);
       group.add(trunk, crown);
     }
   }
