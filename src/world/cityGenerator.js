@@ -135,10 +135,10 @@ export function createCity() {
           // Each north-side parcel reuses the exact dimensions and height of its mirrored south-side parcel.
           const sourceRow = bz >= 5 ? 4 - row : row;
           const parcelRandom = seeded(2026 + bx * 100000 + pairedBlock * 10000 + sourceRow * 100 + col);
-          const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 1;
-          const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 2);
-          const w = 12 + parcelRandom() * 1.5;
-          const d = 12 + parcelRandom() * 1.5;
+          const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 0.2;
+          const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 0.2);
+          const w = 15.8;
+          const d = 15.8;
           const h = floors * 3.1 * (0.9 + parcelRandom() * 0.12);
           const isParis = z >= 0;
           const palette = isParis ? parisBuildings : brickBuildings;
