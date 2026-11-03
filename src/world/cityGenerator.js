@@ -113,13 +113,13 @@ export function createCity() {
       const blockX = -950 + bx * 100;
       const blockZ = bz < 5 ? -450 + bz * 100 : 450 - (bz - 5) * 100;
       const mirrorZ = bz < 5 ? 1 : -1;
-      const nearMain = bx % 3 === 0 || bz % 3 === 0;
+      const pairedBlock = bz < 5 ? bz : bz - 5;
+      const nearMain = bx % 3 === 0 || pairedBlock % 3 === 0;
       const floors = nearMain ? 12 : 8;
       for (let row = 0; row < 5; row++) {
         for (let col = 0; col < 5; col++) {
           // Each north-side parcel reuses the exact dimensions and height of its mirrored south-side parcel.
           const sourceRow = bz >= 5 ? 4 - row : row;
-          const pairedBlock = bz < 5 ? bz : bz - 5;
           const parcelRandom = seeded(2026 + bx * 100000 + pairedBlock * 10000 + sourceRow * 100 + col);
           const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 2;
           const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 2);
