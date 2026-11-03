@@ -56,9 +56,9 @@ export function createCity() {
   const balconies = makePool(balconySlabGeo, parisMaterials[1], 13000);
   const rails = makePool(railGeo, darkMetalMat, 13000);
   const railPosts = makePool(railPostGeo, darkMetalMat, 52000);
-  const screens = makePool(screenGeo, woodMat, 13000);
-  const screenVertical = makePool(slatVGeo, woodMat, 65000);
-  const screenHorizontal = makePool(slatHGeo, woodMat, 39000);
+  const screens = makePool(screenGeo, woodMat, 26000);
+  const screenVertical = makePool(slatVGeo, woodMat, 78000);
+  const screenHorizontal = makePool(slatHGeo, woodMat, 78000);
   const cornices = makePool(corniceGeo, corniceMat, 13000);
   const brickBands = makePool(brickBandGeo, brickMaterials[2], 26000);
   const counts = new Map(pools.map(mesh => [mesh, 0]));
@@ -140,7 +140,7 @@ export function createCity() {
             for (let colIndex = 0; colIndex < windowColumns; colIndex++) {
               const wx = x - w / 2 + (colIndex + 0.5) * w / windowColumns;
               put(windows, { x: wx, y, z: z + d / 2 + 0.09 }, { x: 1, y: 1, z: 1 }, rotation);
-              if (isParis && counts.get(screens) < 12500) {
+              if (isParis && counts.get(screens) < 25000) {
                 put(screens, { x: wx, y, z: z + d / 2 + 0.23 }, { x: 1, y: 1, z: 1 }, rotation);
                 for (let k = -1; k <= 1; k++) {
                   put(screenVertical, { x: wx + k * 0.48, y, z: z + d / 2 + 0.32 }, { x: 1, y: 1, z: 1 }, rotation);
