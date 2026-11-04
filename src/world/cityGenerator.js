@@ -117,13 +117,9 @@ export function createCity() {
       const pairedBlock = bz < 5 ? bz : bz - 5;
       const nearMain = bx % 3 === 0 || pairedBlock % 3 === 0;
       const floors = nearMain ? 12 : 8;
-      // Four 3 m pedestrian alleys in each direction connect the inner parcels.
+      // Four continuous 3 m pedestrian alleys run between attached building rows.
+      // Building fronts within each row nearly touch; access is provided by the clear alleys between rows.
       for (let gap = 0; gap < 4; gap++) {
-        const alleyX = blockX - 39 + gap * 19 + 9.5;
-        const verticalAlley = new THREE.Mesh(alleyGeo, roadMat);
-        verticalAlley.scale.set(3, 1, 88);
-        verticalAlley.position.set(alleyX, 0.025, blockZ);
-        group.add(verticalAlley);
         const alleyZ = blockZ + (gap - 1.5) * 19;
         const horizontalAlley = new THREE.Mesh(alleyGeo, roadMat);
         horizontalAlley.scale.set(88, 1, 3);
@@ -137,7 +133,7 @@ export function createCity() {
           const parcelRandom = seeded(2026 + bx * 100000 + pairedBlock * 10000 + sourceRow * 100 + col);
           const x = blockX - 39 + col * 19 + (parcelRandom() - 0.5) * 0.2;
           const z = blockZ + mirrorZ * ((sourceRow - 2) * 19 + (parcelRandom() - 0.5) * 0.2);
-          const w = 15.8;
+          const w = 18.6;
           const d = 15.8;
           const h = floors * 3.1 * (0.9 + parcelRandom() * 0.12);
           const isParis = z >= 0;
