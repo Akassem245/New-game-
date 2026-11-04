@@ -45,14 +45,14 @@ export function createPlayer(camera, renderer, scene, city) {
     <div class="look-hint">حرّك الكاميرا بالسحب</div>`;
   const style = document.createElement('style');
   style.textContent = `
-    #mobile-controls{display:none;position:fixed;inset:0;z-index:8;pointer-events:none;touch-action:none;font-family:Arial,sans-serif;user-select:none}
+    #mobile-controls{display:none;position:fixed;inset:0;z-index:9999;pointer-events:none;touch-action:none;font-family:Arial,sans-serif;user-select:none}
     .joy-base{position:absolute;left:34px;bottom:48px;width:142px;height:142px;border-radius:50%;background:#15243255;border:2px solid #ffffff99;box-shadow:0 4px 18px #0005;pointer-events:auto;touch-action:none}
     .joy-knob{position:absolute;left:39px;top:39px;width:64px;height:64px;border-radius:50%;background:#dce7edb8;border:2px solid #fff;box-shadow:0 3px 10px #0006;transform:translate(0,0)}
     .mobile-action{position:absolute;right:28px;border:1px solid #ffffffbb;border-radius:50%;background:#152432aa;color:white;font-weight:bold;pointer-events:auto;touch-action:none;box-shadow:0 4px 14px #0005}
     .sprint-action{bottom:58px;width:72px;height:72px;font-size:12px}
     .jump-action{bottom:145px;right:42px;width:58px;height:58px;font-size:10px}
     .look-hint{position:absolute;right:24px;bottom:18px;color:#ffffffa8;font-size:11px;pointer-events:none}
-    @media (pointer:coarse){#mobile-controls{display:block}}
+    @media (pointer:coarse), (hover:none), (max-width:900px){#mobile-controls{display:block !important}}
   `;
   document.head.appendChild(style);
   document.body.appendChild(mobile);
@@ -97,6 +97,7 @@ export function createPlayer(camera, renderer, scene, city) {
   });
 
   renderer.domElement.style.touchAction = 'none';
+  document.documentElement.style.touchAction = 'none';
   renderer.domElement.addEventListener('pointerdown', e => {
     if (e.pointerType !== 'touch' || e.clientX < innerWidth * 0.43) return;
     lookPointer = e.pointerId;
